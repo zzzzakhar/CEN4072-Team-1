@@ -1,5 +1,5 @@
 <%@page import="model.Employee"%>
-<%@page import="utilities.DBConnection"%>
+<%@page import="utilities.DBConnection"%> <!-- Unnecessary import? -->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ page import="java.sql.*" %>

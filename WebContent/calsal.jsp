@@ -1,6 +1,6 @@
 <%@page import="model.Salary"%>
 <%@page import="utilities.DBConnection"%>
-<%@page import="model.TimeSheet"%>
+<%@page import="model.TimeSheet"%> <!-- Seemingly unnecessary import? -->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     

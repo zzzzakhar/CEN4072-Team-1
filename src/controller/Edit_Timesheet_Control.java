@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.ModelFacade;
+
 /**
  * Servlet implementation class updatetimesheetcontroller
  */
@@ -34,9 +36,9 @@ public class Edit_Timesheet_Control extends HttpServlet {
 		
 		
 		
-		model.TimeSheet obj=new model.TimeSheet();
+		ModelFacade obj=new ModelFacade();
 		
-	result=obj.updateTimeSheet(tid, intime, lout, lin, cout,thours);
+	result=obj.TimeSheetupdateTimeSheet(tid, intime, lout, lin, cout,thours);
 		if(!result.equals("success"))
 			pw.print("<h1>Error :"+result); 
 		

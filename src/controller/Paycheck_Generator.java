@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import model.ModelFacade;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,10 +24,10 @@ PrintWriter pw=response.getWriter();
 		
 		double extra =Double.parseDouble(request.getParameter("extra"));
 		
-		model.Salary obj=new model.Salary();
+		ModelFacade obj=new ModelFacade();
 		
 		
-	String result=obj.addPayMode(normal, extra);
+	String result=obj.SalaryaddPayMode(normal, extra);
 		
 		if(result.equals("success"))
 		{

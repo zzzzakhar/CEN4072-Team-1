@@ -1,5 +1,5 @@
 package controller;
-
+import model.ModelFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class deleteempcontroller
  */
+
 public class deleteempcontroller extends HttpServlet {
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
@@ -22,10 +23,9 @@ public class deleteempcontroller extends HttpServlet {
 			
 			
 			//pw.print("ok");
-			model.Employee obj=new model.Employee();
+			ModelFacade obj=new ModelFacade();
 			
-			
-		String result=obj.deleteEmp(eid);
+		String result=obj.EmployeedeleteEmp(eid);
 			
 			if(result.equals("success"))
 			{

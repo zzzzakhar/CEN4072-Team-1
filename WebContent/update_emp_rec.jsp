@@ -1,5 +1,5 @@
-<%@page import="model.Employee"%>
-<%@page import="utilities.DBConnection"%> <!-- Unnecessary import? -->
+<%@page import="model.ModelFacade"%>
+<%@page import="utilities.DBConnection"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ page import="java.sql.*" %>
@@ -33,8 +33,8 @@ String empid="";
 if(request.getParameter("eid")!=null)
 	empid=request.getParameter("eid");
 
-Employee obj=new Employee();
-ResultSet rs=obj.getEmployee(empid);
+ModelFacade obj=new ModelFacade();
+ResultSet rs=obj.EmployeegetEmployee(empid);
 if(rs.next())
 {
 %>

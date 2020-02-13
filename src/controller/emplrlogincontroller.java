@@ -1,5 +1,5 @@
 package controller;
-
+import model.ModelFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -25,9 +25,9 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 	String username = request.getParameter("uname");
 	String password = request.getParameter("pwd");
 	
-	model.Employer obj=new model.Employer();
+	ModelFacade obj=new ModelFacade();
 	
-String result=obj.authenticate(username, password);
+String result=obj.Employerauthenticate(username, password);
 	
 	if(result.equals("success"))
 	{

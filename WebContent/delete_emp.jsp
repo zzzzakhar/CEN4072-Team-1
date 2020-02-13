@@ -1,4 +1,4 @@
-<%@page import="model.Employee"%>
+<%@page import="model.ModelFacade"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -55,8 +55,8 @@ font-size:16px;
 		if(request.getParameter("eid")!=null)
 		{
 			
-    		Employee obj=new Employee();
-    		String result=obj.deleteEmp(request.getParameter("eid"));
+			ModelFacade obj=new ModelFacade();
+    		String result=obj.EmployeedeleteEmp(request.getParameter("eid"));
     		if(result.equals("success"))
     		{
     			out.print("<script language='javascript'>window.alert('Employee  Deleted');window.location.replace('delete_emp.jsp');</script>");

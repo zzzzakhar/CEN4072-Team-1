@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.ModelFacade;
+
 /**
  * Servlet implementation class submittimesheetcontroller
  */
@@ -18,8 +20,10 @@ public class Search_Employee extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter pw=response.getWriter();
 		String empid=request.getParameter("empid");
-		model.TimeSheet obj=new model.TimeSheet();
-		obj.submitTimeSheet(empid);
+		
+		
+		ModelFacade.TimeSheetsubmitTimeSheet(empid);
+		
 		pw.print("<script language='javascript'>window.alert('time sheet submitted');history.back();</script>");
 	}
 

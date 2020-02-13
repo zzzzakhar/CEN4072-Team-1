@@ -1,5 +1,5 @@
 <%@page import="utilities.DBConnection"%>
-<%@page import="model.TimeSheet"%>
+<%@page import="model.ModelFacade"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -27,10 +27,10 @@ font-size:16px;
 <form name="a1" method="get" action="">
 
 <%
-TimeSheet obj=new TimeSheet();
+ModelFacade obj=new ModelFacade();
 String empid=(String)session.getAttribute("empid");
 
-ResultSet rs1=obj.getEmpTimeSheetNotApproved(empid);
+ResultSet rs1=obj.TimeSheetgetEmpTimeSheetNotApproved(empid);
 %>
 
 <center>

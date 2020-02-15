@@ -1,5 +1,5 @@
-<%@page import="utilities.DBConnection"%> <!-- Unnecessary import? -->
-<%@page import="model.TimeSheet"%>
+<%@page import="utilities.DBConnection"%>
+<%@page import="model.ModelFacade"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -29,8 +29,8 @@ font-size:16px;
 
 
 <%
-TimeSheet obj=new TimeSheet();
-ResultSet rs=obj.getTimeSheetApprovedEmpIds();
+ModelFacade obj=new ModelFacade();
+ResultSet rs=obj.TimeSheetgetTimeSheetApprovedEmpIds();
 
 
 
@@ -73,8 +73,8 @@ if(request.getParameter("submit")!=null)
 
 	String empid=request.getParameter("eid");
 	
-TimeSheet obj1=new TimeSheet();
-ResultSet rs1=obj1.getTimeSheetApproved(empid);
+ModelFacade obj1=new ModelFacade();
+ResultSet rs1=obj1.TimeSheetgetTimeSheetApproved(empid);
 
 %>
 <center>

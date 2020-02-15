@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import model.ModelFacade;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
@@ -37,10 +38,10 @@ PrintWriter pw=response.getWriter();
 		
 		
 		//pw.print("ok");
-		model.Employee obj=new model.Employee();
+		ModelFacade obj=new ModelFacade();
 		
 		
-		String result=obj.changePassword(eid, uid, s1,a1,s2,a2,s3,a3, oldpass, newpass);		
+		String result=obj.EmployeechangePassword(eid, uid, s1,a1,s2,a2,s3,a3, oldpass, newpass);		
 		if(result.equals("success"))
 		{
 			pw.print("<script language='javascript'>window.alert('Password changed');window.location.replace('employeehome.jsp');</script>");

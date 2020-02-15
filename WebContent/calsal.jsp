@@ -1,6 +1,6 @@
-<%@page import="model.Salary"%>
+<%@page import="model.ModelFacade"%>
 <%@page import="utilities.DBConnection"%>
-<%@page import="model.TimeSheet"%> <!-- Seemingly unnecessary import? -->
+<%@page import="model.TimeSheet"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -82,8 +82,8 @@ else
 if(request.getParameter("submit")!=null)
 {
 // write the condition to cal salary for everty 2 weeks	
-	Salary obj=new Salary();
-	String result=obj.calculateSalary();
+	ModelFacade obj=new ModelFacade();
+	String result=obj.SalarycalculateSalary();
 	//response.sendRedirect("error.jsp?msg="+result);
 	out.print("<script language='javascript'>window.alert('Pay calculations completed');window.location.replace('emplrhome.jsp');</script>");
 }%>

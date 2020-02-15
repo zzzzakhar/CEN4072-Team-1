@@ -1,6 +1,6 @@
-<%@page import="model.Salary"%>
+<%@page import="model.ModelFacade"%>
 <%@page import="utilities.DBConnection"%>
-<%@page import="model.TimeSheet"%> <!-- Another unnecessary import? -->
+<%@page import="model.TimeSheet"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -29,8 +29,8 @@ font-size:16px;
 <form name="a1" method="get" action="">
 
 <%
-Salary obj=new Salary();
-ResultSet rs1=obj.getEmpPays();
+ModelFacade obj=new ModelFacade();
+ResultSet rs1=obj.SalarygetEmpPays();
 %>
 
 <center>

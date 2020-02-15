@@ -1,5 +1,5 @@
 package controller;
-
+import model.ModelFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -39,10 +39,10 @@ public class Get_Profile extends HttpServlet {
 		
 		
 		//pw.print("ok");
-		model.Employee obj=new model.Employee();
+		ModelFacade obj=new ModelFacade();
 		
 		
-	String result=obj.updateEmployee(eid, fname, lname, gen, dob, job, contact, email, addr, accno, bname);
+	String result=obj.EmployeeupdateEmployee(eid, fname, lname, gen, dob, job, contact, email, addr, accno, bname);
 		
 		if(result.equals("success"))
 		{

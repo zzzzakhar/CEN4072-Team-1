@@ -1,5 +1,5 @@
 package controller;
-
+import model.ModelFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -41,10 +41,10 @@ PrintWriter pw=response.getWriter();
 		
 		
 		//pw.print("ok");
-		model.Employee obj=new model.Employee();
+		ModelFacade obj=new ModelFacade();
 		
 		
-	String result=obj.addEmployee(eid, fname, lname, gen, dob, job, contact, email, addr, accno, bname);
+	String result=obj.EmployeeaddEmployee(eid, fname, lname, gen, dob, job, contact, email, addr, accno, bname);
 		
 		if(result.equals("success"))
 		{

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.ModelFacade;
+
 /**
  * Servlet implementation class addtimesheetcontroller
  */
@@ -38,10 +40,10 @@ public class Timesheet_Control extends HttpServlet {
 		String tid=empid+""+r.nextInt(9)+r.nextInt(9)+r.nextInt(9);
 		
 		//pw.print("ok");
-		model.TimeSheet obj=new model.TimeSheet();
+		ModelFacade obj=new ModelFacade();
 		
 		
-		result=obj.addTimeSheet(tid, empid, day, dt, intime, lout, lin, cout);
+		result=obj.TimeSheetaddTimeSheet(tid, empid, day, dt, intime, lout, lin, cout);
 		if(!result.equals("success"))
 		{
 			response.sendRedirect("error.jsp?msg="+result);

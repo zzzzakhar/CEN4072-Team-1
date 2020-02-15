@@ -1,5 +1,5 @@
 package controller;
-
+import model.ModelFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -52,10 +52,10 @@ public class empregistrationcontroller extends HttpServlet {
 		String a3 = request.getParameter("a3");
 		
 		//pw.print("ok");
-		model.Security_Question obj=new model.Security_Question();
+		ModelFacade obj=new ModelFacade();
 		
 		
-	String result=obj.registeremployee(eid, userid, password, s1, a1, s2, a2, s3, a3);
+	String result=obj.Security_Questionregisteremployee(eid, userid, password, s1, a1, s2, a2, s3, a3);
 		
 		if(result.equals("success"))
 		{

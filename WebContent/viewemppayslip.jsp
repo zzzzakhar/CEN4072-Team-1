@@ -1,4 +1,4 @@
-<%@page import="model.Salary"%>
+<%@page import="model.ModelFacade"%>
 <%@page import="utilities.DBConnection"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -75,9 +75,9 @@ con.close();
   
 <%
 
-Salary obj=new Salary();
+ModelFacade obj=new ModelFacade();
 
-ResultSet rs1=obj.getEmpPay(empid);
+ResultSet rs1=obj.SalarygetEmpPay(empid);
 %>
 
 <br><br>

@@ -1,5 +1,5 @@
 <%@page import="utilities.DBConnection"%>
-<%@page import="model.TimeSheet"%>
+<%@page import="model.ModelFacade"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -58,8 +58,8 @@ if(request.getParameter("submit")!=null)
 
 
 <%
-TimeSheet obj=new TimeSheet();
-ResultSet rs=obj.getTimeSheetNotApproved();
+ModelFacade obj=new ModelFacade();
+ResultSet rs=obj.TimeSheetgetTimeSheetNotApproved();
 
 
 

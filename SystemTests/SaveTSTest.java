@@ -87,53 +87,21 @@ public class SaveTSTest {
     // 4 | click | name=dt1 |  | 
     {
         WebElement dropdown = driver.findElement(By.name("day1"));
-        dropdown.findElement(By.xpath("//option[. = 'Monday']")).click();
+        dropdown.findElement(By.xpath(String.format("//option[. = '%s']", day))).click();
       }
     driver.findElement(By.name("dt1")).click();
     // 5 | type | name=dt1 | 0002-01-01 | 
-    driver.findElement(By.name("dt1")).sendKeys("0002-01-01");
-    // 6 | type | name=dt1 | 0020-01-01 | 
-    driver.findElement(By.name("dt1")).sendKeys("0020-01-01");
-    // 7 | type | name=dt1 | 0202-01-01 | 
-    driver.findElement(By.name("dt1")).sendKeys("0202-01-01");
-    // 8 | type | name=dt1 | 2020-01-01 | 
-    driver.findElement(By.name("dt1")).sendKeys("2020-01-01");
+    driver.findElement(By.name("dt1")).sendKeys(date);
     // 9 | type | name=in1 | 10:00:00 | 
-    driver.findElement(By.name("in1")).sendKeys("10:00:00");
+    driver.findElement(By.name("in1")).sendKeys(inTime);
     // 10 | type | name=lout1 | 11:00:00 | 
-    driver.findElement(By.name("lout1")).sendKeys("11:00:00");
+    driver.findElement(By.name("lout1")).sendKeys(lunchOut);
     // 11 | type | name=lin1 | 12:00:00 | 
-    driver.findElement(By.name("lin1")).sendKeys("12:00:00");
+    driver.findElement(By.name("lin1")).sendKeys(lunchIn);
     // 12 | type | name=cout1 | 20:00:00 | 
-    driver.findElement(By.name("cout1")).sendKeys("20:00:00");
+    driver.findElement(By.name("cout1")).sendKeys(timeOut);
     // 13 | click | name=day2 |  | 
     driver.findElement(By.name("day2")).click();
-    // 14 | select | name=day2 | label=Tuesday | 
-    {
-      WebElement dropdown = driver.findElement(By.name("day2"));
-      dropdown.findElement(By.xpath("//option[. = 'Tuesday']")).click();
-    }
-    // 15 | click | name=day3 |  | 
-    driver.findElement(By.name("day3")).click();
-    // 16 | select | name=day3 | label=Thursday | 
-    {
-      WebElement dropdown = driver.findElement(By.name("day3"));
-      dropdown.findElement(By.xpath("//option[. = 'Thursday']")).click();
-    }
-    // 17 | click | name=day4 |  | 
-    driver.findElement(By.name("day4")).click();
-    // 18 | select | name=day4 | label=Wednesday | 
-    {
-      WebElement dropdown = driver.findElement(By.name("day4"));
-      dropdown.findElement(By.xpath("//option[. = 'Wednesday']")).click();
-    }
-    // 19 | click | name=day5 |  | 
-    driver.findElement(By.name("day5")).click();
-    // 20 | select | name=day5 | label=Sunday | 
-    {
-      WebElement dropdown = driver.findElement(By.name("day5"));
-      dropdown.findElement(By.xpath("//option[. = 'Sunday']")).click();
-    }
     // 21 | click | id=submit |  | 
     driver.findElement(By.id("submit")).click();
     // 22 | click | css=h1 |  | 

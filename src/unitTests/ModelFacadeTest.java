@@ -12,6 +12,7 @@ import utilities.DBConnection;
 import java.rmi.ConnectException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ModelFacadeTest {
@@ -26,9 +27,9 @@ public class ModelFacadeTest {
 				
 		// Set up database using the data from pmsdb.sql
 		String qry1 = "drop database if exists PMS;", 
-				qry2 = "create database PMS;",
-				qry3 = "use PMS;",
-				qry4 = "create table employees(" + 
+			qry2 = "create database PMS;",
+			qry3 = "use PMS;",
+			qry4 = "create table employees(" + 
 				"  emp_id VARCHAR(500)," + 
 				"  first_name VARCHAR(500)," + 
 				"  last_name VARCHAR(500)," + 
@@ -42,11 +43,11 @@ public class ModelFacadeTest {
 				"  bankname VARCHAR(500)," + 
 				"  joindate DATE" + 
 				");",
-				qry5 = "create table employer(" + 
+			qry5 = "create table employer(" + 
 				"  username VARCHAR(500)," + 
 				"  password VARCHAR(500)" + 
 				");",
-				qry6 = "create table users(" + 
+			qry6 = "create table users(" + 
 				"  emp_id VARCHAR(500)," + 
 				"  user_id VARCHAR(500)," + 
 				"  password VARCHAR(500)," + 
@@ -58,11 +59,11 @@ public class ModelFacadeTest {
 				"  ans3 VARCHAR(500)," + 
 				"  createDate DATE" + 
 				");",
-				qry7 = "create table paymode(" + 
+			qry7 = "create table paymode(" + 
 				"  normal_pay DOUBLE," + 
 				"  extra_pay DOUBLE" + 
 				");", 
-				qry8 = "create table emp_ts(" + 
+			qry8 = "create table emp_ts(" + 
 				"  ets_id VARCHAR(500)," + 
 				"  emp_id VARCHAR(500)," + 
 				"  day VARCHAR(500)," + 
@@ -75,7 +76,7 @@ public class ModelFacadeTest {
 				"  status VARCHAR(500)," + 
 				"  date1 DATE" + 
 				");",
-				qry9 = "create table save_ts(" + 
+			qry9 = "create table save_ts(" + 
 				"  ets_id VARCHAR(500)," + 
 				"  emp_id VARCHAR(500)," + 
 				"  day VARCHAR(500)," + 
@@ -88,7 +89,7 @@ public class ModelFacadeTest {
 				"  status VARCHAR(500)," + 
 				"  createDate DATE" + 
 				");",
-				qry10 = "create table salaries(" + 
+			qry10 = "create table salaries(" + 
 				"  emp_id VARCHAR(500)," + 
 				"  total_hours DOUBLE," + 
 				"  tax DOUBLE," + 
@@ -96,26 +97,28 @@ public class ModelFacadeTest {
 				"  net_sal DOUBLE," + 
 				"  date1 DATE" + 
 				");",
-				qry11 = "INSERT INTO `employer` (username, password) VALUES ('user1', 'user1');",
-				qry12 = "INSERT INTO `users` (emp_id, user_id, password, createDate) VALUES ('1', 'user1', " + 
+			qry11 = "INSERT INTO `employer` (username, password) VALUES ('user1', 'user1');",
+			qry12 = "INSERT INTO `users` (emp_id, user_id, password, createDate) VALUES ('1', 'user1', " + 
 				"'user1', '2020-01-12');",
-				qry13 = "INSERT INTO `employees` VALUES ('1','Adam','Sandler','on','1901-01-01','Movie " + 
+			qry13 = "INSERT INTO `employees` VALUES ('1','Adam','Sandler','on','1901-01-01','Movie " + 
 				"Star','0','adam.sandler@email.com','2121 SW 12TH ST','1','Bank of America','2020-" + 
 				"01-14');",
-				qry14 = "INSERT INTO `users` VALUES ('1','adam','adam','Favorite Color?','pink','First PEt " + 
+			qry14 = "INSERT INTO `users` VALUES ('1','adam','adam','Favorite Color?','pink','First PEt " + 
 				"Name?','adam','Favorite movie?','adam','2020-01-14');", 
-				qry15 = "INSERT INTO `emp_ts` VALUES ('1144','1','Monday','2020-01-" + 
+			qry15 = "INSERT INTO `emp_ts` VALUES ('1144','1','Monday','2020-01-" + 
 				"01','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14')," + 
 				"('1114','1','Tuesday','2020-01-" + 
 				"02','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14')," + 
 				"('1172','1','Wednesday','2020-01-" + 
 				"03','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14')," + 
 				"('1341','1','Thursday','2020-01-" + 
-				"04','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14')," + 
+				"04','10:00:00','12:00:00','13:00:00','22:00:00',11,'not approved','2020-01-14')," + 
 				"('1800','1','Friday','2020-01-" + 
-				"05','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14');", 
-				qry16 = "INSERT INTO `paymode` VALUES (10,15);",
-				qry17 = "INSERT INTO `salaries` VALUES ('1',55,165,550,385,'2020-01-14');";
+				"05','10:00:00','12:00:00','13:00:00','22:00:00',11,'not approved','2020-01-14');",
+			qry16 = "INSERT INTO `save_ts` VALUES ('1126','1','Monday','2020-03-04'," + 
+				"'10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-03-07');",
+			qry17 = "INSERT INTO `paymode` VALUES (10,15);",
+			qry18 = "INSERT INTO `salaries` VALUES ('1',55,165,550,385,'2020-01-14');";
 		
 		st.addBatch(qry1);
 		st.addBatch(qry2);
@@ -134,6 +137,7 @@ public class ModelFacadeTest {
 		st.addBatch(qry15);
 		st.addBatch(qry16);
 		st.addBatch(qry17);
+		st.addBatch(qry18);
 		
 		int[] res = st.executeBatch();
 		
@@ -146,17 +150,15 @@ public class ModelFacadeTest {
 
 	@After
 	public void tearDown() throws Exception {
-		// For setup, we add rows to tables to use to test methods that involve updating, deleting,
-		// or requesting data from those tables. We do this directly through DB.connection to avoid using
-		// the same code that we're testing
+		// Same as setup for now to ensure consistency
 		Connection con = DBConnection.createConnection();
 		Statement st = con.createStatement();
 				
 		// Set up database using the data from pmsdb.sql
 		String qry1 = "drop database if exists PMS;", 
-				qry2 = "create database PMS;",
-				qry3 = "use PMS;",
-				qry4 = "create table employees(" + 
+			qry2 = "create database PMS;",
+			qry3 = "use PMS;",
+			qry4 = "create table employees(" + 
 				"  emp_id VARCHAR(500)," + 
 				"  first_name VARCHAR(500)," + 
 				"  last_name VARCHAR(500)," + 
@@ -170,11 +172,11 @@ public class ModelFacadeTest {
 				"  bankname VARCHAR(500)," + 
 				"  joindate DATE" + 
 				");",
-				qry5 = "create table employer(" + 
+			qry5 = "create table employer(" + 
 				"  username VARCHAR(500)," + 
 				"  password VARCHAR(500)" + 
 				");",
-				qry6 = "create table users(" + 
+			qry6 = "create table users(" + 
 				"  emp_id VARCHAR(500)," + 
 				"  user_id VARCHAR(500)," + 
 				"  password VARCHAR(500)," + 
@@ -186,11 +188,11 @@ public class ModelFacadeTest {
 				"  ans3 VARCHAR(500)," + 
 				"  createDate DATE" + 
 				");",
-				qry7 = "create table paymode(" + 
+			qry7 = "create table paymode(" + 
 				"  normal_pay DOUBLE," + 
 				"  extra_pay DOUBLE" + 
 				");", 
-				qry8 = "create table emp_ts(" + 
+			qry8 = "create table emp_ts(" + 
 				"  ets_id VARCHAR(500)," + 
 				"  emp_id VARCHAR(500)," + 
 				"  day VARCHAR(500)," + 
@@ -203,7 +205,7 @@ public class ModelFacadeTest {
 				"  status VARCHAR(500)," + 
 				"  date1 DATE" + 
 				");",
-				qry9 = "create table save_ts(" + 
+			qry9 = "create table save_ts(" + 
 				"  ets_id VARCHAR(500)," + 
 				"  emp_id VARCHAR(500)," + 
 				"  day VARCHAR(500)," + 
@@ -216,7 +218,7 @@ public class ModelFacadeTest {
 				"  status VARCHAR(500)," + 
 				"  createDate DATE" + 
 				");",
-				qry10 = "create table salaries(" + 
+			qry10 = "create table salaries(" + 
 				"  emp_id VARCHAR(500)," + 
 				"  total_hours DOUBLE," + 
 				"  tax DOUBLE," + 
@@ -224,26 +226,28 @@ public class ModelFacadeTest {
 				"  net_sal DOUBLE," + 
 				"  date1 DATE" + 
 				");",
-				qry11 = "INSERT INTO `employer` (username, password) VALUES ('user1', 'user1');",
-				qry12 = "INSERT INTO `users` (emp_id, user_id, password, createDate) VALUES ('1', 'user1', " + 
+			qry11 = "INSERT INTO `employer` (username, password) VALUES ('user1', 'user1');",
+			qry12 = "INSERT INTO `users` (emp_id, user_id, password, createDate) VALUES ('1', 'user1', " + 
 				"'user1', '2020-01-12');",
-				qry13 = "INSERT INTO `employees` VALUES ('1','Adam','Sandler','on','1901-01-01','Movie " + 
+			qry13 = "INSERT INTO `employees` VALUES ('1','Adam','Sandler','on','1901-01-01','Movie " + 
 				"Star','0','adam.sandler@email.com','2121 SW 12TH ST','1','Bank of America','2020-" + 
 				"01-14');",
-				qry14 = "INSERT INTO `users` VALUES ('1','adam','adam','Favorite Color?','pink','First PEt " + 
+			qry14 = "INSERT INTO `users` VALUES ('1','adam','adam','Favorite Color?','pink','First PEt " + 
 				"Name?','adam','Favorite movie?','adam','2020-01-14');", 
-				qry15 = "INSERT INTO `emp_ts` VALUES ('1144','1','Monday','2020-01-" + 
+			qry15 = "INSERT INTO `emp_ts` VALUES ('1144','1','Monday','2020-01-" + 
 				"01','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14')," + 
 				"('1114','1','Tuesday','2020-01-" + 
 				"02','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14')," + 
 				"('1172','1','Wednesday','2020-01-" + 
 				"03','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14')," + 
 				"('1341','1','Thursday','2020-01-" + 
-				"04','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14')," + 
+				"04','10:00:00','12:00:00','13:00:00','22:00:00',11,'not approved','2020-01-14')," + 
 				"('1800','1','Friday','2020-01-" + 
-				"05','10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-01-14');", 
-				qry16 = "INSERT INTO `paymode` VALUES (10,15);",
-				qry17 = "INSERT INTO `salaries` VALUES ('1',55,165,550,385,'2020-01-14');";
+				"05','10:00:00','12:00:00','13:00:00','22:00:00',11,'not approved','2020-01-14');",
+			qry16 = "INSERT INTO `save_ts` VALUES ('1126','1','Monday','2020-03-04'," + 
+				"'10:00:00','12:00:00','13:00:00','22:00:00',11,'approved','2020-03-07');",
+			qry17 = "INSERT INTO `paymode` VALUES (10,15);",
+			qry18 = "INSERT INTO `salaries` VALUES ('1',55,165,550,385,'2020-01-14');";
 		
 		st.addBatch(qry1);
 		st.addBatch(qry2);
@@ -262,6 +266,7 @@ public class ModelFacadeTest {
 		st.addBatch(qry15);
 		st.addBatch(qry16);
 		st.addBatch(qry17);
+		st.addBatch(qry18);
 		
 		int[] res = st.executeBatch();
 		
@@ -289,17 +294,61 @@ public class ModelFacadeTest {
 
 	@Test
 	public void testTimeSheetupdateTimeSheet() {
-		fail("Not yet implemented");
+		// Valid data, expect success
+	    String result = ModelFacade.TimeSheetupdateTimeSheet("1144", 
+	    		"10:00:00","12:00:00","13:00:00","22:00:00", "11");
+	    
+		assertEquals("success", result);
+		
+		// Invalid data, expect failure
+		result = ModelFacade.TimeSheetupdateTimeSheet("1144", 
+	    		"10:00:00","aaaaaaa","6:00 pm","22:00:00", "yes");
+	    
+		assertFalse(result.equals("success"));
 	}
 
 	@Test
 	public void testTimeSheetsubmitTimeSheet() {
-		fail("Not yet implemented");
+		// Valid data, expect success
+		// This should move the time sheet with ID 1126 from save_ts to emp_ts
+	    ModelFacade.TimeSheetsubmitTimeSheet("1");
+	    
+	    Connection con = DBConnection.createConnection();
+	    
+	    try {
+	    	Statement st = con.createStatement();
+		    ResultSet rs = st.executeQuery("select * from save_ts where ets_id = '1126'");
+		    // Equivalent to asserting that rs must be empty
+			assertFalse(rs.next());
+			
+			rs=st.executeQuery("select * from emp_ts where ets_id = '1126'");
+			assertTrue(rs.next());
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
 	}
 
 	@Test
 	public void testTimeSheetgetEmpTimeSheetNotApproved() {
-		fail("Not yet implemented");
+		try {
+			// Valid data, expect success
+		    ResultSet rs = ModelFacade.TimeSheetgetEmpTimeSheetNotApproved("1");
+		    
+		    // Count the number of rows in the response
+		    int numRows = 0;
+		    while (rs.next())
+		    	numRows++;
+		    
+		    // Expecting 2 rows of not-approved time sheets
+			assertEquals(2, numRows);
+			
+			// Invalid data, expect fail
+		    rs = ModelFacade.TimeSheetgetEmpTimeSheetNotApproved("aaaaaaaaa");
+		    
+			assertFalse(rs.next());
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
 	}
 
 	@Test

@@ -480,7 +480,7 @@ public class ModelFacadeTest {
 			fail("SQLException encountered: " + e.toString());
 		}
 		
-		// Invalid employee DoB, should fail
+		// Invalid security question answers, should fail
 	    result = ModelFacade.EmployeechangePassword("1", "adam", "Favorite Color?", "blue", 
 				"First PEt Name?", "a", "Favorite movie?" , "a", "adam", "swordfish");
 		assertFalse(result.equals("success"));
@@ -530,32 +530,119 @@ public class ModelFacadeTest {
 
 	@Test
 	public void testEmployeegetEmployee() {
-		fail("Not yet implemented");
+	    try {
+	    	// Valid employee data
+		    ResultSet rs = ModelFacade.EmployeegetEmployee("2");
+		    
+		    int numRows = 0;
+		    while (rs.next()) {
+		    	numRows++;
+		    }
+
+		    // Should be 1 employee with the ID '2'
+		    assertEquals(1, numRows);
+
+		    // Invalid employee ID, should fail
+			rs = ModelFacade.EmployeegetEmployee("42");
+			assertFalse(rs.next());
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
 	}
 
 	@Test
 	public void testEmployeegetAllEmployees() {
-		fail("Not yet implemented");
+	    try {
+	    	// Valid employee data
+		    ResultSet rs = ModelFacade.EmployeegetAllEmployees();
+		    
+		    int numRows = 0;
+		    while (rs.next()) {
+		    	numRows++;
+		    }
+
+		    // Should be 2 employees total
+		    assertEquals(2, numRows);
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
 	}
 
 	@Test
 	public void testEmployeeupdateEmployee() {
-		fail("Not yet implemented");
+		// Valid employee data
+		String result = ModelFacade.EmployeeupdateEmployee("2", "Hunter", "Biden", "M", "1986-04-21", 
+				"Mailman", "3059032234", "test@email.com", "900 Walker Street", 
+				"1234567890", "Bank of America");
+		assertEquals("success", result);
+		
+	    Connection con = DBConnection.createConnection();
+	    
+	    try {
+	    	Statement st = con.createStatement();
+		    ResultSet rs = st.executeQuery("select first_name from employees where emp_id = '2'");
+		    rs.next(); // Move the cursor to the first row
+		    
+		    String name = rs.getString(1);
+		    // Verify name was changed to "Hunter" in database
+		    assertEquals(name, "Hunter");
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
+		
+		// No employee with ID 42, this should fail
+	    result = ModelFacade.EmployeeupdateEmployee("42", "Hunter", "Biden", "M", "1986-04-21", 
+				"Mailman", "3059032234", "test@email.com", "900 Walker Street", 
+				"1234567890", "Bank of America");
+		assertFalse(result.equals("success"));
 	}
 
 	@Test
 	public void testEmployerauthenticate() {
-		fail("Not yet implemented");
+		// Valid data, expect success
+	    String result = ModelFacade.Employerauthenticate("user1", "user1");
+	    
+		assertEquals("success", result);
+		
+		// Invalid data, expect failure
+		result = ModelFacade.Employerauthenticate("aaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbb");
+	    
+		assertFalse(result.equals("success"));
 	}
 
 	@Test
 	public void testUserauthenticate() {
-		fail("Not yet implemented");
+		// Valid data, expect success
+	    String result = ModelFacade.Userauthenticate("1", "adam", "adam");
+	    
+		assertEquals("success", result);
+		
+		// Invalid data, expect failure
+		result = ModelFacade.Userauthenticate("1", "adam", "swordfish");
+	    
+		assertFalse(result.equals("success"));
 	}
 
 	@Test
 	public void testSecurity_Questionregisteremployee() {
-		fail("Not yet implemented");
+		// Valid employee data
+		String result = ModelFacade.Security_Questionregisteremployee("3", "joe", "scallop123", "Favorite Color?", "pink", 
+				"First PEt Name?", "adam", "Favorite movie?" , "adam");
+		assertEquals("success", result);
+		
+	    Connection con = DBConnection.createConnection();
+	    
+	    try {
+	    	Statement st = con.createStatement();
+		    ResultSet rs = st.executeQuery("select password from users where user_id = 'joe'");
+		    rs.next(); // Move the cursor to the first row
+		    
+		    String pass = rs.getString(1);
+		    // Password was set to scallop123, so this should be true
+		    assertEquals(pass, "scallop123");
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
 	}
 
 }

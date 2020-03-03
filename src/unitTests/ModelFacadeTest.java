@@ -198,6 +198,24 @@ public class ModelFacadeTest {
 	    
 		assertEquals("success", result);
 		
+	    Connection con = DBConnection.createConnection();
+	    
+	    try {
+	    	Statement st = con.createStatement();
+		    ResultSet rs = st.executeQuery("select * from save_ts");
+		    
+		    int numRows = 0;
+		    while (rs.next()) {
+		    	numRows++;
+		    }
+
+		    // Should be 2 rows in save_ts, 1 of which was newly added
+		    assertEquals(2, numRows);
+
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
+		
 		// Invalid data, expect failure
 	    result = ModelFacade.TimeSheetaddTimeSheet("1", "1", "2020/22-aa", 
 	    		"2020-03-02", "09:00:00", "12 noon", "13:00:00", "5 pm");
@@ -327,7 +345,7 @@ public class ModelFacadeTest {
 	public void testSalarycalculateSalary() {
 		// Valid data, expect success
 		// This should populate the salaries table with employee salaries
-		String result = ModelFacade.SalarycalculateSalary();
+		ModelFacade.SalarycalculateSalary();
 		
 	    Connection con = DBConnection.createConnection();
 	    
@@ -386,7 +404,26 @@ public class ModelFacadeTest {
 
 	@Test
 	public void testSalaryaddPayMode() {
-		fail("Not yet implemented");
+		// Valid data, expect success
+		ModelFacade.SalaryaddPayMode(20, 40);
+		
+	    Connection con = DBConnection.createConnection();
+	    
+	    try {
+	    	Statement st = con.createStatement();
+		    ResultSet rs = st.executeQuery("select * from paymode");
+		    
+		    int numRows = 0;
+		    while (rs.next()) {
+		    	numRows++;
+		    }
+
+		    // Should be 2 rows in paymode, 1 of which was newly added
+		    assertEquals(2, numRows);
+
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
 	}
 
 	@Test
@@ -397,6 +434,24 @@ public class ModelFacadeTest {
 				"1234567890", "Bank of America");
 		assertEquals("success", result);
 		
+	    Connection con = DBConnection.createConnection();
+	    
+	    try {
+	    	Statement st = con.createStatement();
+		    ResultSet rs = st.executeQuery("select * from employees");
+		    
+		    int numRows = 0;
+		    while (rs.next()) {
+		    	numRows++;
+		    }
+
+		    // Should be 3 rows in employees, 1 of which was newly added
+		    assertEquals(3, numRows);
+
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
+		
 		// Invalid employee DoB, should fail
 		result = ModelFacade.EmployeeaddEmployee("5", "Hunter", "Biden", "M", "aaaaaaaaaaaaa", // invalid date,  
 				"Mailman", "3059032234", "test@email.com", "900 Walker Street", 
@@ -406,17 +461,71 @@ public class ModelFacadeTest {
 
 	@Test
 	public void testEmployeechangePassword() {
-		fail("Not yet implemented");
+		// Valid employee data
+		String result = ModelFacade.EmployeechangePassword("1", "adam", "Favorite Color?", "pink", 
+				"First PEt Name?", "adam", "Favorite movie?" , "adam", "adam", "swordfish");
+		assertEquals("success", result);
+		
+	    Connection con = DBConnection.createConnection();
+	    
+	    try {
+	    	Statement st = con.createStatement();
+		    ResultSet rs = st.executeQuery("select password from users where user_id = 'adam'");
+		    rs.next(); // Move the cursor to the first row
+		    
+		    String pass = rs.getString(1);
+		    // Password was changed to swordfish, so this should be true
+		    assertEquals(pass, "swordfish");
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
+		
+		// Invalid employee DoB, should fail
+	    result = ModelFacade.EmployeechangePassword("1", "adam", "Favorite Color?", "blue", 
+				"First PEt Name?", "a", "Favorite movie?" , "a", "adam", "swordfish");
+		assertFalse(result.equals("success"));
 	}
 
 	@Test
 	public void testEmployeedeleteEmp() {
-		fail("Not yet implemented");
+		// Valid employee data
+		String result = ModelFacade.EmployeedeleteEmp("2");
+		assertEquals("success", result);
+		
+	    Connection con = DBConnection.createConnection();
+	    
+	    try {
+	    	Statement st = con.createStatement();
+		    ResultSet rs = st.executeQuery("select * from employees");
+		    
+		    int numRows = 0;
+		    while (rs.next()) {
+		    	numRows++;
+		    }
+
+		    // Should be 1 row in employees, since we just deleted 1
+		    assertEquals(1, numRows);
+
+		} catch (SQLException e) {
+			fail("SQLException encountered: " + e.toString());
+		}
+		
+		// Invalid employee ID, should fail
+		result = ModelFacade.EmployeedeleteEmp("42");
+		assertEquals("fail", result);
 	}
 
 	@Test
 	public void testEmployeegetPassword() {
-		fail("Not yet implemented");
+		// Valid employee data
+		String result = ModelFacade.EmployeegetPassword("1", "adam", "Favorite Color?", "pink", 
+				"First PEt Name?", "adam", "Favorite movie?" , "adam");
+		assertTrue(result.contains("success"));
+		
+		// Invalid security question answers, should fail
+		result = ModelFacade.EmployeegetPassword("1", "adam", "Favorite Color?", "yellow", 
+				"First PEt Name?", "fido", "Favorite movie?" , "aaaa");
+		assertFalse(result.contains("success"));
 	}
 
 	@Test

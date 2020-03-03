@@ -12,6 +12,10 @@ public class ModelFacadeTest {
 
 	@Before
 	public void setUp() throws Exception {
+		// For setup, we add rows to tables to use to test methods that involve updating, deleting,
+		// or requesting data from those tables. We do this directly through DB.connection to avoid using
+		// the same code that we're testing
+		
 	}
 
 	@After
@@ -20,7 +24,17 @@ public class ModelFacadeTest {
 
 	@Test
 	public void testTimeSheetaddTimeSheet() {
-		fail("Not yet implemented");
+		// Valid data, expect success
+	    String result = ModelFacade.TimeSheetaddTimeSheet("1", "1", "2020-03-02", 
+	    		"2020-03-02", "09:00:00", "12:00:00", "13:00:00", "17:00:00");
+	    
+		assertEquals("success", result);
+		
+		// Invalid data, expect failure
+	    result = ModelFacade.TimeSheetaddTimeSheet("1", "1", "2020/22-aa", 
+	    		"2020-03-02", "09:00:00", "12 noon", "13:00:00", "5 pm");
+	    
+		assertFalse(result.equals("success"));
 	}
 
 	@Test

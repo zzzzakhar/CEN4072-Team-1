@@ -9,7 +9,6 @@ import org.junit.Test;
 import model.ModelFacade;
 import utilities.DBConnection;
 
-import java.rmi.ConnectException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

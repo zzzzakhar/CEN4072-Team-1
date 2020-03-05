@@ -220,6 +220,12 @@ public class ModelFacadeTest {
 	    		"2020-03-02", "09:00:00", "12 noon", "13:00:00", "5 pm");
 	    
 		assertFalse(result.equals("success"));
+		
+		// Invalid day name, expect failure
+	    result = ModelFacade.TimeSheetaddTimeSheet("1", "1", "yeeeee", 
+	    		"2020-03-02", "09:00:00", "12:00:00", "13:00:00", "17:00:00");
+	    
+		assertFalse(result.equals("success"));
 	}
 
 	@Test
@@ -233,6 +239,12 @@ public class ModelFacadeTest {
 		// Invalid data, expect failure
 		result = ModelFacade.TimeSheetupdateTimeSheet("1144", 
 	    		"10:00:00","aaaaaaa","6:00 pm","22:00:00", "yes");
+	    
+		assertFalse(result.equals("success"));
+		
+		// Invalid number of hours worked, expect failure
+		result = ModelFacade.TimeSheetupdateTimeSheet("1144", 
+	    		"10:00:00","12:00:00","13:00:00","22:00:00", "aaaaaa");
 	    
 		assertFalse(result.equals("success"));
 	}
@@ -456,6 +468,18 @@ public class ModelFacadeTest {
 				"Mailman", "3059032234", "test@email.com", "900 Walker Street", 
 				"1234567890", "Bank of America");
 		assertEquals("fail", result);
+		
+		// Invalid employee gender, should fail
+		result = ModelFacade.EmployeeaddEmployee("5", "Hunter", "Biden", "aaaaaaa", "1986-04-21", // invalid gender,  
+				"Mailman", "3059032234", "test@email.com", "900 Walker Street", 
+				"1234567890", "Bank of America");
+		assertEquals("fail", result);
+		
+		// Invalid employee email, should fail
+		result = ModelFacade.EmployeeaddEmployee("5", "Hunter", "Biden", "M", "1986-04-21", // invalid email,  
+				"Mailman", "3059032234", "aaaaaaaaaaaa", "900 Walker Street", 
+				"1234567890", "Bank of America");
+		assertEquals("fail", result);
 	}
 
 	@Test
@@ -592,6 +616,24 @@ public class ModelFacadeTest {
 		// No employee with ID 42, this should fail
 	    result = ModelFacade.EmployeeupdateEmployee("42", "Hunter", "Biden", "M", "1986-04-21", 
 				"Mailman", "3059032234", "test@email.com", "900 Walker Street", 
+				"1234567890", "Bank of America");
+		assertFalse(result.equals("success"));
+		
+		// Invalid date of birth to update, this should fail
+	    result = ModelFacade.EmployeeupdateEmployee("2", "Hunter", "Biden", "M", "aaaaaaaaaaa", 
+				"Mailman", "3059032234", "test@email.com", "900 Walker Street", 
+				"1234567890", "Bank of America");
+		assertFalse(result.equals("success"));
+		
+		// Invalid phone number to update, should fail
+	    result = ModelFacade.EmployeeupdateEmployee("2", "Hunter", "Biden", "M", "1986-04-21", 
+				"Mailman", "dhbskdvjbrgnbdv", "test@email.com", "900 Walker Street", 
+				"1234567890", "Bank of America");
+		assertFalse(result.equals("success"));
+		
+		// Invalid email to update, should fail
+	    result = ModelFacade.EmployeeupdateEmployee("2", "Hunter", "Biden", "M", "1986-04-21", 
+				"Mailman", "3054035039", "sdjfhbsdljs", "900 Walker Street", 
 				"1234567890", "Bank of America");
 		assertFalse(result.equals("success"));
 	}

@@ -14,5 +14,11 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/kianm/Downloads/selenium-java-3.141.59/client-combined-3.141.59.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kianm/Downloads/selenium-chrome-driver-3.141.59.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kianm/Downloads/selenium-java-3.141.59.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kianm/Downloads/junit-jupiter-api-5.0.0-M1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kianm/Downloads/selenium-java-3.141.59/client-combined-3.141.59-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kianm/Downloads/selenium-server-standalone-3.141.59.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

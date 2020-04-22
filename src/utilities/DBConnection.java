@@ -8,7 +8,7 @@ public class DBConnection {
 public static Connection createConnection()
 {
 Connection con = null;
-String url = "jdbc:mysql://localhost/PMS";
+String url = "jdbc:mysql://localhost:3306/PMS";
 
 try
 {
@@ -21,7 +21,7 @@ catch (ClassNotFoundException e)
 e.printStackTrace();
 }
 
-con = DriverManager.getConnection(url, "root", "root");
+con = DriverManager.getConnection(url, "root", "");
 
 }
 catch (Exception e)

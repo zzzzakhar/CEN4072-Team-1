@@ -135,6 +135,16 @@ public class ModelFacade
 		
 	}
 	
+	public static ResultSet TimeSheetgetSavedTimeSheet(String empid)
+	{
+		return (new TimeSheet()).getSavedTimeSheet(empid);
+	}
+	
+	public static String TimeSheetisSubmitted(String empid)
+	{
+		return (new TimeSheet()).isSubmitted(empid);
+	}
+	
 	//Salary Methods-----------------------------------------------------------
 	public static String SalarycalculateSalary()
 	{

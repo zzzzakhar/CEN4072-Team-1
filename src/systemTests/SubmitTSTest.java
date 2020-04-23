@@ -20,9 +20,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import model.ModelFacade;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
+
 import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,11 +50,13 @@ public class SubmitTSTest {
 
 	@Before
 	public void setUp() {
-		// Setting up path to Google Chrome driver (chdriver)
-		System.setProperty("webdriver.chrome.driver", "/Users/kianmaroofi/git/repository/PMS/chdriver");
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\kianm\\repos\\CEN4072-Team-1\\chromedriver.exe");
 		driver = new ChromeDriver();
 		js = (JavascriptExecutor) driver;
 		vars = new HashMap<String, Object>();
+		// Processing other test environment requirements using ModelFacade
+		// Employee Login Requirement
+		String loginResult = ModelFacade.Userauthenticate("1", "adam", "adam");
 	}
 
 	@Parameterized.Parameters
@@ -72,10 +79,40 @@ public class SubmitTSTest {
 		driver.get("http://localhost:8080/PMS/employeehome.jsp");
 		// 2 | setWindowSize | 1200x781 |  | 
 		driver.manage().window().setSize(new Dimension(1200, 781));
+		
+		
+	    WebElement searchBtn = driver.findElement(By.linkText("Time Sheets"));
+
+		Actions action = new Actions(driver);
+		action.moveToElement(searchBtn).perform();
+		
 		// 3 | click | linkText=Add Time Sheets |  | 
 		driver.findElement(By.linkText("Add Time Sheets")).click();
 		// 4 | click | name=button |  | 
 		driver.findElement(By.name("button")).click();
+		
+		try 
+		{
+			//Handle the alert pop-up 
+			Alert alert = driver.switchTo().alert();
+
+			//get the message which is present on pop-up
+			String message = alert.getText();
+
+			assertTrue(message.contains("time sheet submitted"));
+
+			//print the pop-up message
+			System.out.println(message);
+			//Click on OK button on pop-up
+			alert.accept();
+		} 
+		catch (NoAlertPresentException e) 
+		{
+			//if alert is not present print message
+			System.out.println("alert is not present");
+		}
+
+		
 		// 5 | close |  |  | 
 		driver.close();
 	}

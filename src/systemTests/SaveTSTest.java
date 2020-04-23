@@ -20,6 +20,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import model.ModelFacade;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
@@ -29,18 +32,18 @@ import java.net.URL;
 
 @RunWith(Parameterized.class)
 public class SaveTSTest {
-  private WebDriver driver;
-  private Map<String, Object> vars;
-  JavascriptExecutor js;
-  
-  private String day;
+	private WebDriver driver;
+	private Map<String, Object> vars;
+	JavascriptExecutor js;
+
+	private String day;
 	private String date;
 	private String inTime;
 	private String lunchOut;
 	private String lunchIn;
 	private String timeOut;
-	
-	
+
+
 	public SaveTSTest(String day, String date, String inTime, String lunchOut, String lunchIn, String timeOut) {
 		super();
 		this.day = day;
@@ -50,17 +53,19 @@ public class SaveTSTest {
 		this.lunchIn = lunchIn;
 		this.timeOut = timeOut;
 	}
-  
-  @Before
-  public void setUp() {
-	// Setting up path to Google Chrome driver (chdriver)
-			System.setProperty("webdriver.chrome.driver", "/Users/kianmaroofi/git/repository/PMS/chdriver");
-			driver = new ChromeDriver();
-			js = (JavascriptExecutor) driver;
-			vars = new HashMap<String, Object>();
-  }
-  
-  @Parameterized.Parameters
+
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\kianm\\repos\\CEN4072-Team-1\\chromedriver.exe");
+		driver = new ChromeDriver();
+		js = (JavascriptExecutor) driver;
+		vars = new HashMap<String, Object>();
+		// Processing other test environment requirements using ModelFacade
+		// Employee Login Requirement
+		String loginResult = ModelFacade.Userauthenticate("1", "adam", "adam");
+	}
+
+	@Parameterized.Parameters
 	public static Collection input() {
 		return Arrays.asList(new Object[][] { 
 			{"Monday", "2020-02-24", "10:00:00", "11:00:00", "12:00:00", "22:00:00"},
@@ -69,52 +74,52 @@ public class SaveTSTest {
 			{"Wednesday", "2020-26-02", "10:00:00", "11:00:00", "11:00:00", "21:00:00"},
 			{"Wednesday", "2020-26-02", "", "11:00:00", "11:00:00", "21:00:00"},
 			{"Tuesday", "2020-02-25", "10:00 AM", "11:00 AM", "12:00 PM", "21:30 PM"}
-			
+
 		});
 	}
-  @After
-  public void tearDown() {
-    driver.quit();
-  }
-  @Test
-  public void saveTS() {
-    // Test name: SaveTS
-    // Step # | name | target | value | comment
-    // 1 | open | http://localhost:8080/PMS/employeehome.jsp |  | 
-    driver.get("http://localhost:8080/PMS/employeehome.jsp");
-    // 2 | setWindowSize | 1200x781 |  | 
-    driver.manage().window().setSize(new Dimension(1200, 781));
-    // 3 | click | linkText=Add Time Sheets |  | 
-    driver.findElement(By.linkText("Add Time Sheets")).click();
-    // 4 | click | name=dt1 |  | 
-    {
-        WebElement dropdown = driver.findElement(By.name("day1"));
-        dropdown.findElement(By.xpath(String.format("//option[. = '%s']", day))).click();
-      }
-    driver.findElement(By.name("dt1")).click();
-    // 5 | type | name=dt1 | 0002-01-01 | 
-    driver.findElement(By.name("dt1")).sendKeys(date);
-    // 9 | type | name=in1 | 10:00:00 | 
-    driver.findElement(By.name("in1")).sendKeys(inTime);
-    // 10 | type | name=lout1 | 11:00:00 | 
-    driver.findElement(By.name("lout1")).sendKeys(lunchOut);
-    // 11 | type | name=lin1 | 12:00:00 | 
-    driver.findElement(By.name("lin1")).sendKeys(lunchIn);
-    // 12 | type | name=cout1 | 20:00:00 | 
-    driver.findElement(By.name("cout1")).sendKeys(timeOut);
-    // 13 | click | name=day2 |  | 
-    driver.findElement(By.name("day2")).click();
-    // 21 | click | id=submit |  | 
-    driver.findElement(By.id("submit")).click();
-    // 22 | click | css=h1 |  | 
-    driver.findElement(By.cssSelector("h1")).click();
-    // 23 | click | css=body |  | 
-    driver.findElement(By.cssSelector("body")).click();
-    // 24 | click | css=p:nth-child(3) |  | 
-    driver.findElement(By.cssSelector("p:nth-child(3)")).click();
-    // 25 | verifyText | css=p:nth-child(3) | Type Exception Report | 
-    assertThat(driver.findElement(By.cssSelector("p:nth-child(3)")).getText(), is("Type Exception Report"));
-    // 26 | close |  |  | 
-    driver.close();
-  }
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+	@Test
+	public void saveTS() {
+		// Test name: SaveTS
+		// Step # | name | target | value | comment
+		// 1 | open | http://localhost:8080/PMS/employeehome.jsp |  | 
+		driver.get("http://localhost:8080/PMS/employeehome.jsp");
+		// 2 | setWindowSize | 1200x781 |  | 
+		driver.manage().window().setSize(new Dimension(1200, 781));
+		
+	    WebElement searchBtn = driver.findElement(By.linkText("Time Sheets"));
+
+		Actions action = new Actions(driver);
+		action.moveToElement(searchBtn).perform();
+		
+		
+		// 3 | click | linkText=Add Time Sheets |  | 
+		driver.findElement(By.linkText("Add Time Sheets")).click();
+		// 4 | click | name=dt1 |  | 
+		{
+			WebElement dropdown = driver.findElement(By.name("day1"));
+			dropdown.findElement(By.xpath(String.format("//option[. = '%s']", day))).click();
+		}
+		driver.findElement(By.name("dt1")).click();
+		// 5 | type | name=dt1 | 0002-01-01 | 
+		driver.findElement(By.name("dt1")).sendKeys(date);
+		// 9 | type | name=in1 | 10:00:00 | 
+		driver.findElement(By.name("in1")).sendKeys(inTime);
+		// 10 | type | name=lout1 | 11:00:00 | 
+		driver.findElement(By.name("lout1")).sendKeys(lunchOut);
+		// 11 | type | name=lin1 | 12:00:00 | 
+		driver.findElement(By.name("lin1")).sendKeys(lunchIn);
+		// 12 | type | name=cout1 | 20:00:00 | 
+		driver.findElement(By.name("cout1")).sendKeys(timeOut);
+		// 13 | click | name=day2 |  | 
+		driver.findElement(By.name("day2")).click();
+		// 21 | click | id=submit |  | 
+		driver.findElement(By.id("submit")).click();
+		// 26 | close |  |  | 
+		
+		driver.close();
+	}
 }

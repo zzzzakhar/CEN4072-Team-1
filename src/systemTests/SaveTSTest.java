@@ -26,6 +26,8 @@ import model.ModelFacade;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
+
 import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -119,6 +121,28 @@ public class SaveTSTest {
 		// 21 | click | id=submit |  | 
 		driver.findElement(By.id("submit")).click();
 		// 26 | close |  |  | 
+		
+		try 
+		{
+			//Handle the alert pop-up 
+			Alert alert = driver.switchTo().alert();
+
+			//get the message which is present on pop-up
+			String message = alert.getText();
+
+			assertTrue(message.contains("time sheet submitted"));
+
+			//print the pop-up message
+			System.out.println(message);
+			//Click on OK button on pop-up
+			alert.accept();
+		} 
+		catch (NoAlertPresentException e) 
+		{
+			//if alert is not present print message
+			System.out.println("alert is not present");
+			assertTrue(false);
+		}
 		
 		driver.close();
 	}

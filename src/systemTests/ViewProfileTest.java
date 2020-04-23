@@ -20,6 +20,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import model.ModelFacade;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
@@ -29,68 +32,58 @@ import java.net.URL;
 
 @RunWith(Parameterized.class)
 public class ViewProfileTest {
-  private WebDriver driver;
-  private Map<String, Object> vars;
-  JavascriptExecutor js;
-  
-  private String username;
+	private WebDriver driver;
+	private Map<String, Object> vars;
+	JavascriptExecutor js;
+
+	private String username;
 	private String pwd;
+	private String eid;
 	
-	public ViewProfileTest(String username, String pwd) {
+	public ViewProfileTest(String eid, String username, String pwd) {
 		super();
+		this.eid = eid;
 		this.username = username;
 		this.pwd = pwd;
 	}
-  
-  
-  @Before
-  public void setUp() {
-	// Setting up path to Google Chrome driver (chdriver)
-			System.setProperty("webdriver.chrome.driver", "/Users/kianmaroofi/git/repository/PMS/chdriver");
-			driver = new ChromeDriver();
-			js = (JavascriptExecutor) driver;
-			vars = new HashMap<String, Object>();
-  }
-  
-  @Parameterized.Parameters
-	public static Collection input() {
-		return Arrays.asList(new Object[][] {  {"abcdefghijklmno", "1234"
-		}, {"errorologin", "234354"}, {"user1", "user1"}, {"mcdlr", "1234$"},
-			{"test", "pass"}, {"user", "pass"}});
+
+
+	@Before
+	public void setUp() {
+		// Setting up path to Google Chrome driver (chdriver)
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\kianm\\repos\\CEN4072-Team-1\\chromedriver.exe");
+		driver = new ChromeDriver();
+		js = (JavascriptExecutor) driver;
+		vars = new HashMap<String, Object>();
+		String loginResult = ModelFacade.Userauthenticate(eid, username, pwd);
 	}
-  
-  
-  @After
-  public void tearDown() {
-    driver.quit();
-  }
-  @Test
-  public void viewProfile() {
-    // Test name: ViewProfile
-    // Step # | name | target | value | comment
-    // 1 | open | http://localhost:8080/PMS/employeehome.jsp |  | 
-    driver.get("http://localhost:8080/PMS/employeehome.jsp");
-    // 2 | setWindowSize | 1200x781 |  | 
-    driver.manage().window().setSize(new Dimension(1200, 781));
-    // 3 | click | css=li:nth-child(3) span |  | 
-    driver.findElement(By.cssSelector("li:nth-child(3) span")).click();
-    // 4 | click | css=tbody:nth-child(2) > tr:nth-child(1) |  | 
-    driver.findElement(By.cssSelector("tbody:nth-child(2) > tr:nth-child(1)")).click();
-    // 5 | click | id=l2 |  | 
-    driver.findElement(By.id("l2")).click();
-    // 6 | click | id=l2 |  | 
-    driver.findElement(By.id("l2")).click();
-    // 7 | doubleClick | id=l2 |  | 
-    {
-      WebElement element = driver.findElement(By.id("l2"));
-      Actions builder = new Actions(driver);
-      builder.doubleClick(element).perform();
-    }
-    // 8 | click | css=tbody:nth-child(2) > tr:nth-child(1) |  | 
-    driver.findElement(By.cssSelector("tbody:nth-child(2) > tr:nth-child(1)")).click();
-    // 9 | click | css=tbody:nth-child(2) > tr:nth-child(1) |  | 
-    driver.findElement(By.cssSelector("tbody:nth-child(2) > tr:nth-child(1)")).click();
-    // 10 | verifyText | xpath=(//td[@id='l2'])[2] | Employee ID : | 
-    assertThat(driver.findElement(By.xpath("(//td[@id=\'l2\'])[2]")).getText(), is("Employee ID :"));
-  }
+
+	@Parameterized.Parameters
+	public static Collection input() {
+		return Arrays.asList(new Object[][] {  {"1", "adam", "adam"},  {"1", "adam", "adam"},  {"1", "adam", "adam"},  {"1", "adam", "adam"} ,  {"1", "adam", "adam"},  {"1", "adam", "adam"},  {"1", "adam", "adam"}    });
+	}
+
+
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+	@Test
+	public void viewProfile() {
+		// Logging in before test as employee
+
+
+		// Test name: ViewProfile
+		// Step # | name | target | value | comment
+		// 1 | open | http://localhost:8080/PMS/employeehome.jsp |  | 
+		//driver.get("http://localhost:8080/PMS/employeehome.jsp");
+		driver.get("http://localhost:8080/PMS/viewemppayslip.jsp");
+		// 2 | setWindowSize | 1200x781 |  | 
+		driver.manage().window().setSize(new Dimension(1200, 781));
+		//driver.findElement(By.linkText("View Pay Slips")).click();
+
+
+		// 10 | verifyText | xpath=(//td[@id='l2'])[2] | Employee ID : | 
+		assertThat(driver.findElement(By.xpath("(//td[@id=\'l2\'])[2]")).getText(), is("Employee ID :"));
+	}
 }

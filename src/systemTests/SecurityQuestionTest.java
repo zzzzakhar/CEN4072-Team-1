@@ -23,6 +23,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
+
 import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,7 +44,7 @@ public class SecurityQuestionTest {
 	private String ans2;
 	private String secQ3;
 	private String ans3;
-	
+
 
 	public SecurityQuestionTest(String empID, String username, String secQ1, String ans1, 
 			String secQ2, String ans2, String secQ3, String ans3) {
@@ -61,7 +63,7 @@ public class SecurityQuestionTest {
 	@Before
 	public void setUp() {
 		// Setting up path to Google Chrome driver (chdriver)
-		System.setProperty("webdriver.chrome.driver", "/Users/kianmaroofi/git/repository/PMS/chdriver");
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\kianm\\repos\\CEN4072-Team-1\\chromedriver.exe");
 		driver = new ChromeDriver();
 		js = (JavascriptExecutor) driver;
 		vars = new HashMap<String, Object>();
@@ -70,17 +72,17 @@ public class SecurityQuestionTest {
 	@Parameterized.Parameters
 	public static Collection input() {
 		return Arrays.asList(new Object[][] { 
-			{"1", "adam", "Favorite Color?", "pink", "First Pet name?", "adam", "Favorite Movie?", "adam"},
-			{"1", "adam", "Favorite Color?", "pink", "First Pet name?", "adam", "First Pet name", "lisa"},
-			{"99", "john", "Favorite Color?", "pink", "First Pet name?", "adam", "First Pet name", "lisa"},
-			{"1", "adam", "Favorite Color?", "pink", "First Pet name?", "adam", "First Pet name", ""},
-			{"1", "adam", "Favorite Color?", "", "First Pet name?", "adam", "", ""},
-			{"2", "adam", "Favorite Color?", "pink", "First Pet name?", "adam", "Favorite Movie?", "adam"}
+			{"1", "adam", "Favorate Color?", "pink", "First PEt Name?", "adam", "Favorate Color?", "adam"},
+			{"1", "adam", "Favorate Color?", "pink", "First PEt Name?", "adam", "First PEt Name", "lisa"},
+			{"99", "john", "Favorate Color?", "pink", "First PEt Name?", "adam", "First PEt Name", "lisa"},
+			{"1", "adam", "Favorate Color?", "pink", "First PEt Name?", "adam", "First PEt Name", ""},
+			{"1", "adam", "Favorate Color?", "", "First PEt Name?", "adam", "", ""},
+			{"2", "adam", "Favorate Color?", "pink", "First PEt Name?", "adam", "Favorite Movie?", "adam"}
 		});
 	}
 
-	
-	
+
+
 	@After
 	public void tearDown() {
 		driver.quit();
@@ -141,5 +143,29 @@ public class SecurityQuestionTest {
 		driver.findElement(By.name("a3")).sendKeys(ans3);
 		// 23 | click | id=submit |  | 
 		driver.findElement(By.id("submit")).click();
+		
+		try 
+		{
+			//Handle the alert pop-up 
+			Alert alert = driver.switchTo().alert();
+
+			//get the message which is present on pop-up
+			String message = alert.getText();
+
+			assertTrue(message.contains("user details not found"));
+
+			//print the pop-up message
+			System.out.println(message);
+			//Click on OK button on pop-up
+			alert.accept();
+		} 
+		catch (NoAlertPresentException e) 
+		{
+			//if alert is not present print message
+			System.out.println("alert is not present");
+			assertTrue(false);
+		}
+		
+		driver.close();
 	}
 }
